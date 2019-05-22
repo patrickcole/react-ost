@@ -1,14 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-function Albums({ match }) {
-
-  let album_list = [
-    { id: 'simcity-2000', title: 'SimCity 2000' },
-    { id: 'simcity-3000', title: 'SimCity 3000' },
-    { id: 'simcity4', title: 'SimCity 4' },
-    { id: 'simcity', title: 'SimCity' }
-  ];
+function Albums({ match, list }) {
 
   return (
     <div>
@@ -18,10 +11,14 @@ function Albums({ match }) {
       
       <ul>
       {
-        album_list.map((item, index) => {
+        list.map(item => {
           return (
-            <li>
-              <Link to={`${match.url}/${item.id}`}>{item.title}</Link>
+            <li key={`album-${item.id}`}>
+              <Link 
+                to={{
+                  pathname: `${match.url}/${item.id}`,
+                  state: { album: item }
+                }}>{item.title}</Link>
             </li>
           )
         })
@@ -34,21 +31,41 @@ function Albums({ match }) {
 }
 
 function App() {
+
+  let ostData = [
+    { id: 'simcity-2000', title: 'SimCity 2000', guid: 'DDQY3zGEbQU' },
+    { id: 'simcity-3000', title: 'SimCity 3000', guid: 'qkXOxLpdMds'},
+    { id: 'simcity4', title: 'SimCity 4', guid: 'PSv37HwwojU' },
+    { id: 'simcity', title: 'SimCity', guid: '5GCoc893Vt8' }
+  ];
+
+  const [soundtracks] = useState(ostData);
+
   return (
     <Router>
       <div>
         <Header />
 
         <Route exact path="/" component={Home} />
-        <Route path="/albums" component={Albums} />
+        <Route path="/albums" render={ props => <Albums {...props} list={soundtracks} />  } />
       </div>
     </Router>
   );
 }
 
-function Topic({ match }) {
+function Topic({location }) {
+  return (
+    <>
+      <h3>{location.state.album.title}</h3>;
+      <Player guid={location.state.album.guid} />
+    </>
+  )
+}
 
-  return <h3>Album: {match.params.id}</h3>;
+function Player({guid}) {
+  return (
+    <iframe width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${guid}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  )
 }
 
 function Home() { return <h2>Home</h2> }
