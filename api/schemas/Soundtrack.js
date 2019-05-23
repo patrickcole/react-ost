@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 let soundtrackSchema = new mongoose.Schema({
   slug: String,
+  title: String,
+  embed: String,
   tracks: [
     {
       title: String,

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 let cors = require('cors');
 
+const Album = require('./schemas/Album');
 const Soundtrack = require('./schemas/Soundtrack');
 
 require('custom-env').env(true)
@@ -24,6 +25,13 @@ let db = mongoose.connection;
 
 db.once('open', () => console.log('Connected to the database.') );
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'));
+
+router.get('/albums', (req, res) => {
+  Album.find( ( err, data ) => {
+    if ( err ) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  })
+});
 
 router.get('/soundtracks', (req, res) => {
   Soundtrack.find( (err, data) => {

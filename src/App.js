@@ -1,53 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import './App.css';
 
-function Albums({ match, list }) {
-
-  return (
-    <div>
-
-      <h2>Albums</h2>
-      <Route exact path={match.path} render={() => <p>Please select an album.</p>} />
-      
-      <ul>
-      {
-        list.map(item => {
-          return (
-            <li key={`album-${item.slug}`}>
-              <Link 
-                to={{
-                  pathname: `${match.url}/${item.slug}`,
-                  state: { album: item, slug: item.slug }
-                }}>{item.slug}</Link>
-            </li>
-          )
-        })
-      }
-      </ul>
-
-      <Route path={`${match.path}/:id`} component={Album} />
-    </div>
-  );
+// helper function to async/await fetch request:
+async function getDataAsync(url) {
+  let response = await fetch(url);
+  let data = await response.json();
+  return data;
 }
 
-function App() {
+// memoized components:
+const Home = React.memo((props) => <h2>Home</h2>);
+const Header = React.memo((props) => {
+  return (
+    <header>
+      <Route exact path="/" component={Home} />
+      <Route path="/albums" render={ () => <h2>Albums</h2> } />
+      <nav>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/albums">Albums</Link></li>
+        </ul>
+      </nav>
+    </header>
+  )
+});
 
-  let ostData = [
-    { slug: 'simcity-2000' },
-    { slug: 'simcity-3000' },
-    { slug: 'simcity-4' },
-    { slug: 'simcity-2013' }
-  ];
+// dynamic components:
+function Albums({ match, list }) {
+
+  // Establish logic for album display:
+  let albumDisplay;
+  if ( list.length < 1 ){
+    albumDisplay = <p>No Albums Available</p>
+  } else {
+    albumDisplay = (
+      <ul>
+        {
+          list.map(item => {
+            return (
+              <li key={`album-${item.slug}`}>
+                <Link to={`${match.url}/${item.slug}`}>{item.title}</Link>
+              </li>
+            )
+          })
+        }
+      </ul>
+    )
+  }
 
   return (
-    <Router>
-      <div>
-        <Header />
-
-        <Route exact path="/" component={Home} />
-        <Route path="/albums" render={ props => <Albums {...props} list={ostData} />  } />
-      </div>
-    </Router>
+    <>
+    <aside>{ albumDisplay }</aside>
+    <Route path={`${match.path}/:id`} component={Album} />
+    </>
   );
 }
 
@@ -55,17 +61,8 @@ function Album({location}) {
 
   const [soundtrack, setSoundtrack] = useState({});
 
-  // helper function to async/await fetch request:
-  async function getDataAsync(url) {
-    console.log("started getData");
-    let response = await fetch(url);
-    let data = await response.json();
-    return data;
-  }
-
   useEffect(
     () => {
-
       let album = location.pathname;
       album = album.replace('/albums/','');
       getDataAsync(`http://localhost:3001/api/soundtrack/${album}`)
@@ -75,54 +72,55 @@ function Album({location}) {
     }, [location] );
 
   return (
-    <div>
+    <main>
       { soundtrack.title ? <h3>{ soundtrack.title }</h3> : <h3>Title Not Loaded</h3> }
       { soundtrack.embed ? <Player embed={soundtrack.embed} /> : <p>Player Not Loaded</p> }
       { soundtrack.tracks ? <Tracks list={soundtrack.tracks} /> : <p>Tracks Not Loaded</p> }
-    </div>
+    </main>
   )
 }
 
 function Tracks({list}) {
 
-  if ( list.length < 1 ){
-    return <p>No Tracks Available</p>
+  let tracksDisplay;
+  if ( list.length < 1 ) {
+    tracksDisplay = <p>No tracks available</p>
   } else {
-    return (
+    tracksDisplay = (
       <ul>
       {
-        list.map( (track) => {
-          return <li>{ track.title } - { track.playAt }</li>
+        list.map( (track, index) => {
+          return <li key={`track${index}`}>{ track.title } - { track.playAt }</li>
         })
       }
       </ul>
     )
   }
+
+  return tracksDisplay;
 }
 
-function Player({embed}) {
+const Player = ({embed}) => <iframe id="reactOSTPlayer" title="OST Player" width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}?autoplay=0&enablejsapi=1&modestbranding=1&fs=0&disablekb=1&controls=0`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>;
 
-  const playerStyle = {
-    float: 'right'
-  };
-  return (
-    <div style={playerStyle}>
-      <iframe width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  )
-}
+function App() {
 
-function Home() { return <h2>Home</h2> }
-function Header() {
+  const [albumsData, setAlbumsData] = useState([]);
+
+  useEffect(
+    () => {
+      getDataAsync(`http://localhost:3001/api/albums`)
+        .then( response => {
+          setAlbumsData(response.data)
+        });
+    }, []
+  );
+
   return (
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/albums">Albums</Link>
-      </li>
-    </ul>
+    <Router>
+        <Header />
+        <Route path="/" exact render={ props => <p>Welcome to React OST</p> } />
+        <Route path="/albums" render={ props => <Albums {...props} list={albumsData} />  } />
+    </Router>
   );
 }
 
