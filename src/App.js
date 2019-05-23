@@ -18,7 +18,7 @@ function Albums({ match, list }) {
                 to={{
                   pathname: `${match.url}/${item.slug}`,
                   state: { album: item, slug: item.slug }
-                }}>{item.title}</Link>
+                }}>{item.slug}</Link>
             </li>
           )
         })
@@ -33,10 +33,10 @@ function Albums({ match, list }) {
 function App() {
 
   let ostData = [
-    { slug: 'simcity-2000', title: 'SimCity 2000', guid: 'DDQY3zGEbQU' },
-    { slug: 'simcity-3000', title: 'SimCity 3000', guid: 'qkXOxLpdMds'},
-    { slug: 'simcity4', title: 'SimCity 4', guid: 'PSv37HwwojU' },
-    { slug: 'simcity', title: 'SimCity', guid: '5GCoc893Vt8' }
+    { slug: 'simcity-2000' },
+    { slug: 'simcity-3000' },
+    { slug: 'simcity-4' },
+    { slug: 'simcity-2013' }
   ];
 
   return (
@@ -78,14 +78,37 @@ function Album({location}) {
     <div>
       { soundtrack.title ? <h3>{ soundtrack.title }</h3> : <h3>Title Not Loaded</h3> }
       { soundtrack.embed ? <Player embed={soundtrack.embed} /> : <p>Player Not Loaded</p> }
-      { soundtrack.tracks ? <p>Tracks Loaded</p> : <p>Tracks Not Loaded</p> }
+      { soundtrack.tracks ? <Tracks list={soundtrack.tracks} /> : <p>Tracks Not Loaded</p> }
     </div>
   )
 }
 
+function Tracks({list}) {
+
+  if ( list.length < 1 ){
+    return <p>No Tracks Available</p>
+  } else {
+    return (
+      <ul>
+      {
+        list.map( (track) => {
+          return <li>{ track.title } - { track.playAt }</li>
+        })
+      }
+      </ul>
+    )
+  }
+}
+
 function Player({embed}) {
+
+  const playerStyle = {
+    float: 'right'
+  };
   return (
-    <iframe width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div style={playerStyle}>
+      <iframe width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
   )
 }
 
