@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function Albums({ match, list }) {
@@ -13,11 +13,11 @@ function Albums({ match, list }) {
       {
         list.map(item => {
           return (
-            <li key={`album-${item.id}`}>
+            <li key={`album-${item.slug}`}>
               <Link 
                 to={{
-                  pathname: `${match.url}/${item.id}`,
-                  state: { album: item }
+                  pathname: `${match.url}/${item.slug}`,
+                  state: { album: item, slug: item.slug }
                 }}>{item.title}</Link>
             </li>
           )
@@ -25,7 +25,7 @@ function Albums({ match, list }) {
       }
       </ul>
 
-      <Route path={`${match.path}/:id`} component={Topic} />
+      <Route path={`${match.path}/:id`} component={Album} />
     </div>
   );
 }
@@ -33,13 +33,11 @@ function Albums({ match, list }) {
 function App() {
 
   let ostData = [
-    { id: 'simcity-2000', title: 'SimCity 2000', guid: 'DDQY3zGEbQU' },
-    { id: 'simcity-3000', title: 'SimCity 3000', guid: 'qkXOxLpdMds'},
-    { id: 'simcity4', title: 'SimCity 4', guid: 'PSv37HwwojU' },
-    { id: 'simcity', title: 'SimCity', guid: '5GCoc893Vt8' }
+    { slug: 'simcity-2000', title: 'SimCity 2000', guid: 'DDQY3zGEbQU' },
+    { slug: 'simcity-3000', title: 'SimCity 3000', guid: 'qkXOxLpdMds'},
+    { slug: 'simcity4', title: 'SimCity 4', guid: 'PSv37HwwojU' },
+    { slug: 'simcity', title: 'SimCity', guid: '5GCoc893Vt8' }
   ];
-
-  const [soundtracks] = useState(ostData);
 
   return (
     <Router>
@@ -47,24 +45,47 @@ function App() {
         <Header />
 
         <Route exact path="/" component={Home} />
-        <Route path="/albums" render={ props => <Albums {...props} list={soundtracks} />  } />
+        <Route path="/albums" render={ props => <Albums {...props} list={ostData} />  } />
       </div>
     </Router>
   );
 }
 
-function Topic({location }) {
+function Album({location}) {
+
+  const [soundtrack, setSoundtrack] = useState({});
+
+  // helper function to async/await fetch request:
+  async function getDataAsync(url) {
+    console.log("started getData");
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
+  }
+
+  useEffect(
+    () => {
+
+      let album = location.pathname;
+      album = album.replace('/albums/','');
+      getDataAsync(`http://localhost:3001/api/soundtrack/${album}`)
+        .then( response => {
+          setSoundtrack(response.data)
+        })
+    }, [location] );
+
   return (
-    <>
-      <h3>{location.state.album.title}</h3>;
-      <Player guid={location.state.album.guid} />
-    </>
+    <div>
+      { soundtrack.title ? <h3>{ soundtrack.title }</h3> : <h3>Title Not Loaded</h3> }
+      { soundtrack.embed ? <Player embed={soundtrack.embed} /> : <p>Player Not Loaded</p> }
+      { soundtrack.tracks ? <p>Tracks Loaded</p> : <p>Tracks Not Loaded</p> }
+    </div>
   )
 }
 
-function Player({guid}) {
+function Player({embed}) {
   return (
-    <iframe width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${guid}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   )
 }
 
