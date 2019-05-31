@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Player from './Player';
 import './App.css';
 
 // helper function to async/await fetch request:
@@ -100,7 +101,8 @@ function Tracks({list}) {
   return tracksDisplay;
 }
 
-const Player = ({embed}) => <iframe id="reactOSTPlayer" title="OST Player" width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}?autoplay=0&enablejsapi=1&modestbranding=1&fs=0&disablekb=1&controls=0`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>;
+
+//const Player = ({embed}) => <iframe id="reactOSTPlayer" title="OST Player" width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}?autoplay=0&enablejsapi=1&modestbranding=1&fs=0&disablekb=1&controls=0`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>;
 
 function App() {
 
