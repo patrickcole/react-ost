@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Player from './Player';
-import './App.css';
+import { getDataAsync } from './Network';
 
-// helper function to async/await fetch request:
-async function getDataAsync(url) {
-  let response = await fetch(url);
-  let data = await response.json();
-  return data;
-}
+import Player from './Player';
+import PlayerContext from './PlayerContext';
+
+import './App.css';
 
 // memoized components:
 const Header = React.memo((props) => {
@@ -26,7 +23,18 @@ const Header = React.memo((props) => {
   )
 });
 const Home = React.memo((props) => <h2>Home</h2>);
-const Track = React.memo((props) => <li>{props.data.title} - {props.data.playAt}</li>);
+const Track = React.memo((props) => {
+
+  const { player } = useContext(PlayerContext);
+
+  let seekPlayerTo = (e) => player.seekTo(e.target.dataset.seconds);
+
+  return (
+    <li>
+      <button onClick={seekPlayerTo} data-seconds={props.data.playAt}>{props.data.title}</button>
+    </li>
+  )
+});
 
 // dynamic components:
 function Albums({ match, list }) {
@@ -62,6 +70,9 @@ function Albums({ match, list }) {
 function Album({location}) {
 
   const [soundtrack, setSoundtrack] = useState({});
+  const [player, setPlayer] = useState(null);
+
+  const onPlayerAssignment = (node) => setPlayer(node);
 
   useEffect(
     () => {
@@ -75,9 +86,11 @@ function Album({location}) {
 
   return (
     <main>
-      { soundtrack.title ? <h3>{ soundtrack.title }</h3> : <h3>Title Not Loaded</h3> }
-      { soundtrack.embed ? <Player embed={soundtrack.embed} /> : <p>Player Not Loaded</p> }
-      { soundtrack.tracks ? <Tracks list={soundtrack.tracks} /> : <p>Tracks Not Loaded</p> }
+      <PlayerContext.Provider value={{ player: player, assignPlayer: onPlayerAssignment }}>
+        { soundtrack.title ? <h3>{ soundtrack.title }</h3> : <h3>Title Not Loaded</h3> }
+        { soundtrack.embed ? <Player embed={soundtrack.embed} /> : <p>Player Not Loaded</p> }
+        { soundtrack.tracks ? <Tracks list={soundtrack.tracks} /> : <p>Tracks Not Loaded</p> }
+      </PlayerContext.Provider>
     </main>
   )
 }

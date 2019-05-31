@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext} from 'react';
 import YouTube from 'react-youtube';
+import PlayerContext from './PlayerContext';
 
 function Player( { embed } ) {
 
-  const [player, setPlayer] = useState(null);
+  const { assignPlayer } = useContext(PlayerContext);
 
   const opts = {
     height: '100',
@@ -12,7 +13,7 @@ function Player( { embed } ) {
     }
   };
 
-  let thisOnReady = (e) => setPlayer(e.target);
+  let thisOnReady = (e) => assignPlayer(e.target);
 
   return (
     <div>
