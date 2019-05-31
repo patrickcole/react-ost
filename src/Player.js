@@ -6,8 +6,10 @@ function Player( { embed } ) {
   const [player, setPlayer] = useState(null);
 
   const opts = {
-    height: '240',
-    width: '480'
+    height: '100',
+    playerVars: {
+      autoplay: 0
+    }
   };
 
   let thisOnReady = (e) => setPlayer(e.target);

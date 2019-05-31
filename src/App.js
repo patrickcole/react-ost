@@ -11,7 +11,6 @@ async function getDataAsync(url) {
 }
 
 // memoized components:
-const Home = React.memo((props) => <h2>Home</h2>);
 const Header = React.memo((props) => {
   return (
     <header>
@@ -26,6 +25,8 @@ const Header = React.memo((props) => {
     </header>
   )
 });
+const Home = React.memo((props) => <h2>Home</h2>);
+const Track = React.memo((props) => <li>{props.data.title} - {props.data.playAt}</li>);
 
 // dynamic components:
 function Albums({ match, list }) {
@@ -81,6 +82,7 @@ function Album({location}) {
   )
 }
 
+
 function Tracks({list}) {
 
   let tracksDisplay;
@@ -91,7 +93,7 @@ function Tracks({list}) {
       <ul>
       {
         list.map( (track, index) => {
-          return <li key={`track${index}`}>{ track.title } - { track.playAt }</li>
+          return <Track key={`track${index}`} data={track} />
         })
       }
       </ul>
@@ -100,9 +102,6 @@ function Tracks({list}) {
 
   return tracksDisplay;
 }
-
-
-//const Player = ({embed}) => <iframe id="reactOSTPlayer" title="OST Player" width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${embed}?autoplay=0&enablejsapi=1&modestbranding=1&fs=0&disablekb=1&controls=0`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>;
 
 function App() {
 
