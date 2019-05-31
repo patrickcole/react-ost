@@ -43,6 +43,7 @@ router.get('/soundtracks', (req, res) => {
 router.get('/soundtrack/:id', (req, res) => {
   Soundtrack.findOne({ slug: req.params.id}, (err, data) => {
     if ( err ) return res.json({ success: false, error: err });
+    if ( !data ) return res.json( { success: true, data: { title: 'Soundtrack Not Found' } } );
     return res.json({ success: true, data: data });
   })
 })
