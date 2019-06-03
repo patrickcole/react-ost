@@ -1,3 +1,107 @@
 body {
-  margin: 20px;
+  margin: 0;
+  background: linear-gradient(19deg, #090E19 0%, #090E19 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #E7EBEB;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+html {
+  height: 100%;
+  height: 100vh;
+}
+
+a:link, a:visited {
+  color: currentColor;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  color: currentColor;
+  text-decoration: underline;
+}
+
+#root {
+
+  display: flex;
+}
+
+.bookmark {
+  background-color: rgba(0,0,0,0.8);
+  flex: 0 0 200px;
+  padding: 1rem;
+}
+
+.page {
+  flex: 1 1 auto;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+}
+
+.list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list__tracks {
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.list-item__track {
+  margin-top: 0.25rem;
+}
+
+
+.album {
+  position: relative;
+}
+
+.album__player, .album__player div, .player {
+  width: 100%;
+}
+
+.album__details {
+  position: relative;
+  z-index: 1;
+  padding: 1.25rem;
+}
+
+.title__album {
+  font-size: 3rem;
+  margin-bottom: 1.25rem;
+}
+
+.track {
+  width: 100%;
+  display: flex;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background-color: rgba(0,0,0,0.7);
+  cursor: pointer;
+  color: currentColor;
+  text-align: left;
+  font-size: 0.8rem;
+  justify-content: space-around;
+}
+
+.track:hover, .track:active, .track:focus {
+  background-color: rgba(0,0,0,1);
+}
+
+.track > * {
+  flex: 1 1 auto;
+  margin: 0 0.5rem;
+}
+
+.track__duration {
+  text-align: right;
 }

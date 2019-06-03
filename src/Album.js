@@ -21,14 +21,17 @@ function Album({location}) {
     }, [location] );
 
   return (
-    <main>
-      { <h3>{ soundtrack.title }</h3> }
-
-      <PlayerContext.Provider value={{ player: player, assignPlayer: onPlayerAssignment }}>  
+    <PlayerContext.Provider value={{ player: player, assignPlayer: onPlayerAssignment }}>
+    <main className="album">
+      <div className="album__player">
         { soundtrack.embed ? <Player embed={soundtrack.embed} /> : <></> }
+      </div>
+      <div className="album__details">
+        { <h3 className="title title__album">{ soundtrack.title }</h3> }
         { soundtrack.tracks ? <TrackList data={soundtrack.tracks} /> : <></> }
-      </PlayerContext.Provider>
+      </div>
     </main>
+    </PlayerContext.Provider>
   )
 }
 

@@ -3,27 +3,22 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { getDataAsync } from './Network';
 
 import AlbumList from './AlbumList';
+import Album from './Album';
 
 import './App.css';
 
-const Header = React.memo( (props) => {
-  return (
-    <header>
-      <h1>React OST</h1>
-      <p>An official source for soundtracks to listen to while you work.</p>
-      <nav>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/albums">Albums</Link></li>
-        </ul>
-      </nav>
-    </header>
-  )
-});
-
 const MainMenu = React.memo( (props) => {
-  return <p>There's still much more work to be done here, but we've got the first couple soundtracks added and more will be coming soon.</p>
+  return (
+    <>
+    <p>An official source for soundtracks to listen to while you work.</p>
+    <p>There's still much more work to be done here, but we've got the first couple soundtracks added and more will be coming soon.</p>
+    </>
+  );
 })
+
+function AlbumDisplay({ match, data }) {
+  return <Route path={`${match.path}/:id`}  />
+}
 
 function App() {
 
@@ -38,9 +33,19 @@ function App() {
 
   return (
     <Router>
-        <Header />
+      <div className="bookmark">
+        <h1><Link to="/">React OST</Link></h1>
+        <nav className="menu__primary">
+          <ul className="list">
+            <li className="list-item"><Link to="/albums">Albums</Link></li>
+          </ul>
+        </nav>
+      </div>
+      <div className="page">
         <Route path="/" exact render={ props => <MainMenu /> } />
-        <Route path="/albums" render={ props => <AlbumList {...props} data={data} />  } />
+        <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
+        <Route path="/albums/:id" render={ props => <Album {...props} /> } />
+      </div>
     </Router>
   );
 }

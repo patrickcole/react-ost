@@ -7,7 +7,6 @@ function Player( { embed } ) {
   const { assignPlayer } = useContext(PlayerContext);
 
   const opts = {
-    height: '100',
     playerVars: {
       autoplay: 0
     }
@@ -16,9 +15,9 @@ function Player( { embed } ) {
   let thisOnReady = (e) => assignPlayer(e.target);
 
   return (
-    <div>
-      <YouTube videoId={embed} opts={opts} onReady={thisOnReady} />
-    </div>
+    <>
+      <YouTube className="player" videoId={embed} opts={opts} onReady={thisOnReady} />
+    </>
   )
 };
 
