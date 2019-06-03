@@ -38,6 +38,12 @@ function App() {
         <nav className="menu__primary">
           <ul className="list">
             <li className="list-item"><Link to="/albums">Albums</Link></li>
+            <li className="list-item">
+              Favorites
+              <ul className="list">
+                <li className="list-item">Coming Soon</li>
+              </ul>
+            </li>
           </ul>
         </nav>
       </div>
@@ -46,6 +52,7 @@ function App() {
         <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
         <Route path="/albums/:id" render={ props => <Album {...props} /> } />
       </div>
+      <footer className="footer">react-ost Project &bull; Patrick Cole</footer>
     </Router>
   );
 }
