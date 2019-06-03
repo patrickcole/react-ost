@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { getDataAsync } from './Network';
 
@@ -16,10 +16,6 @@ const MainMenu = React.memo( (props) => {
   );
 })
 
-function AlbumDisplay({ match, data }) {
-  return <Route path={`${match.path}/:id`}  />
-}
-
 function App() {
 
   const [data, setData] = useState([]);
@@ -34,16 +30,11 @@ function App() {
   return (
     <Router>
       <div className="bookmark">
-        <h1><Link to="/">React OST</Link></h1>
+        <h1 className="branding"><Link to="/">React OST</Link></h1>
         <nav className="menu__primary">
           <ul className="list">
             <li className="list-item"><Link to="/albums">Albums</Link></li>
-            <li className="list-item">
-              Favorites
-              <ul className="list">
-                <li className="list-item">Coming Soon</li>
-              </ul>
-            </li>
+            <li className="list-item"><Link to="/favorites">Favorites</Link></li>
           </ul>
         </nav>
       </div>
@@ -51,6 +42,7 @@ function App() {
         <Route path="/" exact render={ props => <MainMenu /> } />
         <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
         <Route path="/albums/:id" render={ props => <Album {...props} /> } />
+        <Route path="/favorites" exact render={ props => <p>Coming soon</p> } />
       </div>
       <footer className="footer">react-ost Project &bull; Patrick Cole</footer>
     </Router>

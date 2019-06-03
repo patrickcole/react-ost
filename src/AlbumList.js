@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function AlbumList({ match, data }) {
@@ -11,12 +11,12 @@ function AlbumList({ match, data }) {
     } else {
       return (
         <div className="well">
-          <ul className="list">
+          <ul className="list list__albums">
             {
               data.map(item => {
                 return (
-                  <li key={`album-${item.slug}`}>
-                    <Link to={`${match.url}/${item.slug}`}>{item.title}</Link>
+                  <li className="list-item__album" key={`album-${item.slug}`}>
+                    <Link className="link link__album" to={`${match.url}/${item.slug}`}>{item.title}</Link>
                   </li>
                 )
               })

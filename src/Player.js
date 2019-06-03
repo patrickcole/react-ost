@@ -8,7 +8,11 @@ function Player( { embed } ) {
 
   const opts = {
     playerVars: {
-      autoplay: 0
+      autoplay: 0,
+      rel: 0,
+      showinfo: 0,
+      ecvar: 2,
+      modestbranding: 1
     }
   };
 

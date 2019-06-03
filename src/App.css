@@ -41,6 +41,12 @@ a:hover, a:active {
   padding: 1rem;
 }
 
+.branding {
+  margin: 0 0 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
 .page {
   padding: 1rem;
 }
@@ -63,6 +69,10 @@ a:hover, a:active {
   padding: 0;
 }
 
+.list-item--hasItems {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
 .list__tracks {
 
   display: flex;
@@ -73,6 +83,36 @@ a:hover, a:active {
 .list-item__track {
   margin-top: 0.25rem;
 }
+
+.list__albums {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list-item__album {
+  flex: 1 1 128px;
+  margin: 1rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px;
+  background-color: #010101;
+}
+
+.list-item__album:hover, .list-item__album:active, .list-item__album:focus {
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.link__album {
+  display: block;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.90rem;
+}
+
+.link__album:hover, .link__album:active, .link__album:focus {
+  text-decoration: none;
+}
+
+
 
 
 .album {
@@ -123,6 +163,7 @@ a:hover, a:active {
 .track > * {
   flex: 1 1 auto;
   margin: 0 0.5rem;
+  pointer-events: none;
 }
 
 .track__duration {
