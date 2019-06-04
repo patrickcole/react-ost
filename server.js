@@ -7,7 +7,11 @@ let cors = require('cors');
 const Album = require('./schemas/Album');
 const Soundtrack = require('./schemas/Soundtrack');
 
-require('custom-env').env(true)
+if ( (process.env.NODE_ENV || 'development') === 'development' ){
+  const dotenv = require('dotenv')
+  dotenv.config();
+  console.log(`Server is reporting in development mode`);
+}
 
 const DB_PATH = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 const app = express();
