@@ -34,8 +34,6 @@ let db = mongoose.connection;
 db.once('open', () => console.log('Connected to the database.') );
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'));
 
-
-
 router.get('/albums', (req, res) => {
   Album.find( ( err, data ) => {
     if ( err ) return res.json({ success: false, error: err });
