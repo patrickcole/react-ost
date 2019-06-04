@@ -53,4 +53,4 @@ router.get('/soundtrack/:id', (req, res) => {
 })
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`API Running on port ${process.env.APP_PORT}`) );
+app.listen(port, () => console.log(`API Running on port ${port}`) );
