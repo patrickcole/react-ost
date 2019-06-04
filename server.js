@@ -23,12 +23,17 @@ app.use( bodyParser.json() );
 app.use( logger('dev') );
 app.use('/api', router);
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/public')));
+
 mongoose.connect( DB_PATH, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 
 db.once('open', () => console.log('Connected to the database.') );
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'));
+
+
 
 router.get('/albums', (req, res) => {
   Album.find( ( err, data ) => {
