@@ -1,3 +1,4 @@
+const path = require('path');
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -56,6 +57,10 @@ router.get('/soundtrack/:id', (req, res) => {
     return res.json({ success: true, data: data });
   })
 })
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/public/404.html'));
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`API Running on port ${port}`) );
