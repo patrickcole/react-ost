@@ -80,6 +80,11 @@ a:hover, a:active {
   flex-direction: column;
 }
 
+.list-item a {
+  display: block;
+  margin: 1.0rem;
+}
+
 .list-item__track {
   margin-top: 0.25rem;
 }
@@ -133,7 +138,7 @@ a:hover, a:active {
 .album__details {
   position: relative;
   z-index: 1;
-  padding: 1.25rem;
+  padding: 1.25rem 0 0;
 }
 
 .title__album {
@@ -144,7 +149,7 @@ a:hover, a:active {
 .track {
   width: 100%;
   display: flex;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border: 1px solid transparent;
   border-radius: 3px;
   background-color: rgba(0,0,0,0.7);
@@ -160,9 +165,12 @@ a:hover, a:active {
   background-color: rgba(0,0,0,1);
 }
 
-.track > * {
+.track > span {
   flex: 1 1 auto;
   margin: 0 0.5rem;
+}
+
+.track > * {
   pointer-events: none;
 }
 
