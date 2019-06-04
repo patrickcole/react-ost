@@ -16,7 +16,7 @@ function Album({location}) {
     () => {
       let album = location.pathname;
       album = album.replace('/albums/','');
-      getDataAsync(`http://localhost:3001/api/soundtrack/${album}`)
+      getDataAsync(`/api/soundtrack/${album}`)
         .then( response => setSoundtrack(response.data) )
     }, [location] );
 

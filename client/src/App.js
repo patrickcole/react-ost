@@ -22,7 +22,7 @@ function App() {
 
   useEffect(
     () => {
-      getDataAsync(`http://localhost:3001/api/albums`)
+      getDataAsync(`/api/albums`)
         .then( response => setData(response.data) );
     }, []
   );

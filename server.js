@@ -25,7 +25,13 @@ app.use( logger('dev') );
 app.use('/api', router);
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+/*
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/404.html'));
+});
+*/
 
 mongoose.connect( DB_PATH, { useNewUrlParser: true });
 
@@ -56,9 +62,7 @@ router.get('/soundtrack/:id', (req, res) => {
   })
 })
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/public/404.html'));
-});
+
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`API Running on port ${port}`) );
