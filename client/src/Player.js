@@ -12,7 +12,8 @@ function Player( { embed } ) {
       rel: 0,
       showinfo: 0,
       ecvar: 2,
-      modestbranding: 1
+      modestbranding: 1,
+      playsinline: 1
     }
   };
 
