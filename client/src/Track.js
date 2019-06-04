@@ -11,8 +11,13 @@ function Track( { data } ) {
   return (
     <li className="list-item__track">
       <button className="track" onClick={seekPlayerTo} data-seconds={data.playAt}>
+        {data.title}
+        {
+        /* 
         <span className="track__title">{data.title}</span>
         <span className="track__duration">{formatDuration(data.duration)}</span>
+        */
+        }
       </button>
     </li>
   )
