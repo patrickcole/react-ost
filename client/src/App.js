@@ -19,6 +19,7 @@ const MainMenu = React.memo( (props) => {
 function App() {
 
   const [data, setData] = useState([]);
+  const [favorites, setFavorites] = useState(localStorage.getItem('react-ost-favorites') || 'No favorite');
 
   useEffect(
     () => {
@@ -27,6 +28,12 @@ function App() {
     }, []
   );
 
+  useEffect(() => {
+    localStorage.setItem('react-ost-favorites', favorites);
+  }, [favorites]);
+
+  let updateStorage = ( value ) => setFavorites(value);
+
   return (
     <Router>
       <div className="bookmark">
@@ -34,15 +41,17 @@ function App() {
         <nav className="menu__primary">
           <ul className="list">
             <li className="list-item"><Link to="/albums">Albums</Link></li>
-            <li className="list-item"><Link to="/favorites">Favorites</Link></li>
+            <li className="list-item">
+              <h3>Favorites</h3>
+              { favorites }
+            </li>
           </ul>
         </nav>
       </div>
       <div className="page">
         <Route path="/" exact render={ props => <MainMenu /> } />
         <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
-        <Route path="/albums/:id" render={ props => <Album {...props} /> } />
-        <Route path="/favorites" exact render={ props => <p>Coming soon</p> } />
+        <Route path="/albums/:id" render={ props => <Album {...props} onUpdateStorage={updateStorage} /> } />
       </div>
       <footer className="footer">react-ost Project &bull; Patrick Cole</footer>
     </Router>
