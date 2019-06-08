@@ -92,14 +92,16 @@ a:hover, a:active {
 .list__albums {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: -1rem;
 }
 
 .list-item__album {
-  flex: 1 1 auto;
-  margin: 1rem;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 3px;
   background-color: #010101;
+  margin: 1rem;
 }
 
 .list-item__album:hover, .list-item__album:active, .list-item__album:focus {

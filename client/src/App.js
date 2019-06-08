@@ -32,10 +32,24 @@ function App() {
     localStorage.setItem('react-ost-favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  let updateStorage = ( value ) => {
+  let returnFavoriteStatus = ( slug ) => {
+
+    return favorites.some( ( item ) => {
+      return item.slug === slug;
+    });
+  };
+
+  let updateStorage = ( add, obj ) => {
     
-    let newFavorites = [...favorites, value]
-    setFavorites(newFavorites)
+    let newFavorites;
+    if ( add ) {
+      newFavorites = [...favorites, obj];
+    } else {
+      newFavorites = favorites.filter( (item) => {
+        return item.slug !== obj.slug;
+      });
+    }
+    setFavorites(newFavorites);
   };
 
   return (
@@ -47,7 +61,7 @@ function App() {
             <li className="list-item"><Link to="/albums">Albums</Link></li>
             <li className="list-item">
               <h3>Favorites</h3>
-              { favorites.map( (item) => <p>{ item }</p>) }
+              { favorites.map( (item) => <p><Link to={`/albums/${item.slug}`}>{ item.title }</Link></p>) }
             </li>
           </ul>
         </nav>
@@ -55,7 +69,7 @@ function App() {
       <div className="page">
         <Route path="/" exact render={ props => <MainMenu /> } />
         <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
-        <Route path="/albums/:id" render={ props => <Album {...props} onUpdateStorage={updateStorage} /> } />
+        <Route path="/albums/:id" render={ props => <Album {...props} onUpdateStorage={updateStorage} onFavoriteStatusCheck={returnFavoriteStatus} /> } />
       </div>
       <footer className="footer">react-ost Project &bull; Patrick Cole</footer>
     </Router>
