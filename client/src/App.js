@@ -19,7 +19,7 @@ const MainMenu = React.memo( (props) => {
 function App() {
 
   const [data, setData] = useState([]);
-  const [favorites, setFavorites] = useState(localStorage.getItem('react-ost-favorites') || 'No favorite');
+  const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('react-ost-favorites')) || []);
 
   useEffect(
     () => {
@@ -29,10 +29,14 @@ function App() {
   );
 
   useEffect(() => {
-    localStorage.setItem('react-ost-favorites', favorites);
+    localStorage.setItem('react-ost-favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  let updateStorage = ( value ) => setFavorites(value);
+  let updateStorage = ( value ) => {
+    
+    let newFavorites = [...favorites, value]
+    setFavorites(newFavorites)
+  };
 
   return (
     <Router>
@@ -43,7 +47,7 @@ function App() {
             <li className="list-item"><Link to="/albums">Albums</Link></li>
             <li className="list-item">
               <h3>Favorites</h3>
-              { favorites }
+              { favorites.map( (item) => <p>{ item }</p>) }
             </li>
           </ul>
         </nav>
