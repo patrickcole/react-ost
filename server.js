@@ -41,10 +41,11 @@ db.once('open', () => console.log('Connected to the database.') );
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'));
 
 router.get('/albums', (req, res) => {
+
   Album.find( ( err, data ) => {
     if ( err ) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
-  })
+  }).sort( { slug: 1 } );
 });
 
 router.get('/soundtracks', (req, res) => {
