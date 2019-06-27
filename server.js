@@ -2,6 +2,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const logger = require('morgan');
 let cors = require('cors');
 
@@ -21,6 +22,7 @@ const router = express.Router();
 app.use( cors() );
 app.use( bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
+app.use( helmet() );
 app.use( logger('dev') );
 app.use('/api', router);
 
