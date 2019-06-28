@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const logger = require('morgan');
 let cors = require('cors');
 
-const Album = require('./schemas/Album');
 const Soundtrack = require('./schemas/Soundtrack');
 
 if ( (process.env.NODE_ENV || 'development') === 'development' ){
@@ -44,10 +43,21 @@ db.on('error', console.error.bind(console, 'MongoDB Connection Error'));
 
 router.get('/albums', (req, res) => {
 
-  Album.find( ( err, data ) => {
+  Soundtrack.aggregate([ 
+    { 
+      $group: { 
+        _id: "$_id", 
+        slug: { $first: "$slug" },
+        title: { $first: "$title" }
+      }
+    }, 
+    { 
+      $sort: { slug: 1 } 
+    }
+  ], (err, data ) => {
     if ( err ) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
-  }).sort( { slug: 1 } );
+  })
 });
 
 router.get('/soundtracks', (req, res) => {
