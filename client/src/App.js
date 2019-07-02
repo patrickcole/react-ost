@@ -33,7 +33,6 @@ function App() {
   }, [favorites]);
 
   let returnFavoriteStatus = ( slug ) => {
-
     return favorites.some( ( item ) => {
       return item.slug === slug;
     });
@@ -61,7 +60,7 @@ function App() {
             <li className="list-item"><Link to="/albums">Albums</Link></li>
             <li className="list-item">
               <h3>Favorites</h3>
-              { favorites.map( (item) => <p><Link to={`/albums/${item.slug}`}>{ item.title }</Link></p>) }
+              { favorites.map( (item, index) => <p key={`favorite${index}`}><Link to={`/albums/${item.slug}`}>{ item.title }</Link></p>)  }
             </li>
           </ul>
         </nav>
@@ -69,7 +68,7 @@ function App() {
       <div className="page">
         <Route path="/" exact render={ props => <MainMenu /> } />
         <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
-        <Route path="/albums/:id" render={ props => <Album {...props} onUpdateStorage={updateStorage} onFavoriteStatusCheck={returnFavoriteStatus} /> } />
+        <Route path="/albums/:id" exact render={ props => <Album {...props} onUpdateStorage={updateStorage} onFavoriteStatusCheck={returnFavoriteStatus} /> } />
       </div>
       <footer className="footer">react-ost Project &bull; Patrick Cole</footer>
     </Router>

@@ -10,7 +10,7 @@ function TrackList( {data} ) {
     // TODO: Add player controls:
     return (
       <ul className="list list__tracks">
-      { data.map( (track, index) => <Track key={`track${index}`} data={track} />) }
+      { data.map( (track, index) => <Track key={`track${index}`} track_index={index} data={track} />) }
       </ul>
     )
   }

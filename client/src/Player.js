@@ -1,8 +1,8 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import YouTube from 'react-youtube';
 import PlayerContext from './PlayerContext';
 
-function Player( { embed } ) {
+function Player( { embed, dispatchStatePaused, dispatchStatePlaying } ) {
 
   const { assignPlayer } = useContext(PlayerContext);
 
@@ -19,11 +19,15 @@ function Player( { embed } ) {
     }
   };
 
-  let thisOnReady = (e) => assignPlayer(e.target);
-
+  let handleStateReady = (e) => assignPlayer(e.target);
+  
   return (
     <>
-      <YouTube className="player" videoId={embed} opts={opts} onReady={thisOnReady} />
+      <YouTube className="player" videoId={embed} opts={opts} 
+        onPlay={dispatchStatePlaying} 
+        onPause={dispatchStatePaused} 
+        onReady={handleStateReady} 
+      />
     </>
   )
 };
