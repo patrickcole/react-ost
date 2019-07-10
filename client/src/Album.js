@@ -116,6 +116,10 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
         { soundtrack.embed ? <Player embed={soundtrack.embed} dispatchStatePaused={handleStatePaused} dispatchStatePlaying={handleStatePlaying} /> : <></> }
       </section>
       <section className="album__controls">
+        
+        <span className="a11y-visual-hidden" aria-live="polite">{ playing ? 'Audio is now playing' : 'Audio is now paused' }</span>
+        <span className="a11y-visual-hidden" aria-live="polite">{ favoriteEnabled ? 'Favorite added' : 'Favorite removed' }</span>
+
         <button className="btn btn__control" onClick={onPlaybackButtonClick}>{ playing ? 'Pause' : 'Play' }</button>
         { favoriteEnabled ? <button className="btn btn__control" onClick={onFavoriteRemoved}>Remove Favorite</button> : <button className="btn btn__control" onClick={onFavoriteAdded}>Add Favorite</button> }
       </section>
