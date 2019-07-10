@@ -71,6 +71,7 @@ function App() {
       <Router>
         <header className="bookmark" role="banner">
           <span className="branding"><Link to="/">React <abbr title="Official Soundtrack">OST</abbr></Link></span>
+          <a class="focusable a11y-visual-hidden" href="#page">Skip to main content</a>
           <nav className="menu__primary" role="navigation" aria-label="Main Navigation">
             <ul className="list">
               <li className="list-item"><Link to="/albums">Soundtracks</Link></li>
@@ -83,7 +84,7 @@ function App() {
             </ul>
           </nav>
         </header>
-        <main className="page" role="main">
+        <main id="page" className="page" role="main">
           <Route path="/" exact render={ props => <MainMenu /> } />
           <Route path="/albums" exact render={ props => <AlbumList {...props} data={data} />  } />
           <Route path="/albums/:id" exact render={ props => <Album {...props} onUpdateStorage={updateStorage} onFavoriteStatusCheck={returnFavoriteStatus} /> } />
