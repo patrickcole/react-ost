@@ -6,12 +6,12 @@ function TrackList( {data} ) {
   if ( data.length < 1 ) {
     return <p>No tracks available</p>
   } else {
-
-    // TODO: Add player controls:
     return (
-      <ul className="list list__tracks">
-      { data.map( (track, index) => <Track key={`track${index}`} track_index={index} data={track} />) }
-      </ul>
+      <nav role="navigation" aria-label="Soundtrack Track List">
+        <ul className="list list__tracks">
+          { data.map( (track, index) => <Track key={`track${index}`} track_index={index} data={track} />) }
+        </ul>
+      </nav>
     )
   }
 }

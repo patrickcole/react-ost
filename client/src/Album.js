@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { getDataAsync } from './Network';
 
 import Player from './Player';
 import PlayerContext from './PlayerContext';
 import TrackList from "./TrackList";
+
+// DEBUG:
+import AppContext from './AppContext';
 
 function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
 
@@ -17,6 +20,9 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
 
   const [favoriteEnabled, setFavoriteEnabled] = useState(false);
 
+  // DEBUG:
+  const { debug, assignDebug } = useContext(AppContext);
+
   let onPlayerAssignment = (node) => setPlayer(node);
   let onFavoriteAdded = (e) => {
     onUpdateStorage(true, { title: soundtrack.title, slug: soundtrack.slug });
@@ -29,6 +35,10 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
   let handleStatePlaying = (e) => setPlaying(true);
   let handleStatePaused = (e) => setPlaying(false);
   let onPlaybackButtonClick = (e) => {
+
+    // DEBUG:
+    assignDebug({ ...debug, message: `video play state = ${!playing}`});
+
     if ( playing ) {
       player.pauseVideo();
     } else {
@@ -64,8 +74,15 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
 
   useEffect(
     () => {
+
+      // DEBUG:
+      assignDebug({ ...debug, title: album_slug, message: `Loading album data`});
+
       getDataAsync(`/api/soundtrack/${album_slug}`)
-        .then( (response) => setSoundtrack(response.data) )
+        .then( (response) => {
+          setSoundtrack(response.data);
+          assignDebug({ ...debug, message: `Album data loaded`});
+        })
     }, [album_slug]
   );
 
@@ -94,19 +111,19 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
 
   return (
     <PlayerContext.Provider value={{ player: player, assignPlayer: onPlayerAssignment }}>
-    <main className="album">
-      <div className="album__player">
+    <article className="album" role="article">
+      <section className="album__player">
         { soundtrack.embed ? <Player embed={soundtrack.embed} dispatchStatePaused={handleStatePaused} dispatchStatePlaying={handleStatePlaying} /> : <></> }
-      </div>
-      <div className="album__controls">
+      </section>
+      <section className="album__controls">
         <button className="btn btn__control" onClick={onPlaybackButtonClick}>{ playing ? 'Pause' : 'Play' }</button>
         { favoriteEnabled ? <button className="btn btn__control" onClick={onFavoriteRemoved}>Remove Favorite</button> : <button className="btn btn__control" onClick={onFavoriteAdded}>Add Favorite</button> }
-      </div>
-      <div className="album__details">
-        { <h3 className="title title__album">{ soundtrack.title }</h3> }
+      </section>
+      <section className="album__details">
+        { <h1 className="title title__album">{ soundtrack.title }</h1> }
         { soundtrack.tracks ? <TrackList data={soundtrack.tracks} /> : <></> }
-      </div>
-    </main>
+      </section>
+    </article>
     </PlayerContext.Provider>
   )
 }

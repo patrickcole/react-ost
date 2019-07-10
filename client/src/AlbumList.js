@@ -10,7 +10,7 @@ function AlbumList({ match, data }) {
       return <p>No Albums Available</p>
     } else {
       return (
-        <div className="well">
+        <>
           <ul className="list list__albums">
             {
               data.map(item => {
@@ -22,15 +22,16 @@ function AlbumList({ match, data }) {
               })
             }
           </ul>
-        </div>
+        </>
       )
     }
   }
 
   return (
-    <div className="album">
-      <aside className="album-drawer">{ handleAlbumLogic() }</aside>
-    </div>
+    <article className="album" role="article">
+      <h1>Soundtracks</h1>
+      { handleAlbumLogic() }
+    </article>
   );
 }
 

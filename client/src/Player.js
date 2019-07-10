@@ -7,14 +7,14 @@ function Player( { embed, dispatchStatePaused, dispatchStatePlaying } ) {
   const { assignPlayer } = useContext(PlayerContext);
 
   const opts = {
+    host: 'https://www.youtube-nocookie.com',
     playerVars: {
       autoplay: 0,
-      rel: 0,
+      fs: 0,
       showinfo: 0,
       ecvar: 2,
       modestbranding: 1,
       playsinline: 1,
-      controls: 0,
       disablekb: 1
     }
   };
