@@ -13,6 +13,7 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
   const [soundtrack, setSoundtrack] = useState({});
   const [player, setPlayer] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
   const [startAt, setStartAt] = useState(-1);
 
   let album_slug = location.pathname;
@@ -34,6 +35,7 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
   }
   let handleStatePlaying = (e) => setPlaying(true);
   let handleStatePaused = (e) => setPlaying(false);
+
   let onPlaybackButtonClick = (e) => {
 
     // DEBUG:
@@ -45,6 +47,18 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
       player.playVideo();
     }
   }
+
+  let onMuteButtonClick = (e) => {
+
+    if ( player.isMuted() ) {
+      setMuted(false);
+      player.unMute();
+    } else {
+      setMuted(true);
+      player.mute();
+    }
+  }
+
   let getHighlightedTrackIndex = (query) => {
 
     let index = -1;
@@ -121,6 +135,8 @@ function Album({location, onUpdateStorage, onFavoriteStatusCheck}) {
         <span className="a11y-visual-hidden" aria-live="polite">{ favoriteEnabled ? 'Favorite added' : 'Favorite removed' }</span>
 
         <button className="btn btn__control" onClick={onPlaybackButtonClick}>{ playing ? 'Pause' : 'Play' }</button>
+        <button className="btn btn__control" onClick={onMuteButtonClick}>{ muted ? 'Unmute' : 'Mute' }</button>
+
         { favoriteEnabled ? <button className="btn btn__control" onClick={onFavoriteRemoved}>Remove Favorite</button> : <button className="btn btn__control" onClick={onFavoriteAdded}>Add Favorite</button> }
       </section>
       <section className="album__details">

@@ -13,6 +13,7 @@ function Player( { embed, dispatchStatePaused, dispatchStatePlaying } ) {
       fs: 0,
       showinfo: 0,
       ecvar: 2,
+      controls: 0,
       modestbranding: 1,
       playsinline: 1,
       disablekb: 1

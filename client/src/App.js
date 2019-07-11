@@ -71,7 +71,7 @@ function App() {
       <Router>
         <header className="bookmark" role="banner">
           <span className="branding"><Link to="/">React <abbr title="Official Soundtrack">OST</abbr></Link></span>
-          <a class="focusable a11y-visual-hidden" href="#page">Skip to main content</a>
+          <a className="focusable a11y-visual-hidden" href="#page">Skip to main content</a>
           <nav className="menu__primary" role="navigation" aria-label="Main Navigation">
             <ul className="list">
               <li className="list-item"><Link to="/albums">Soundtracks</Link></li>
